@@ -7,6 +7,7 @@ const Todo = () => {
 	const tasks = [
 		{ id: 'task-1', title: 'Купить молоко', isDone: false },
 		{ id: 'task-2', title: 'Погладить кота', isDone: true },
+		{ id: 'task-3', title: 'Сделать кофе', isDone: false },
 	]
 
 	const deleteAllTasks = () => {
