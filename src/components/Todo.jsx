@@ -11,10 +11,7 @@ const Todo = () => {
 			return JSON.parse(savedTasks)
 		}
 
-		return [
-			{ id: 'task-1', title: 'Купить молоко', isDone: false },
-			{ id: 'task-2', title: 'Погладить кота', isDone: true },
-		]
+		return []
 	})
 
 	const [newTaskTitle, setNewTaskTitle] = useState('')
