@@ -9,6 +9,7 @@ const TodoList = (props) => {
 	} = props
 
 	const hasTasks = tasks.length > 0
+	// возвращает true, если массив существует и пуст
 	const isEmptyFilteredTasks = filteredTasks?.length === 0
 
 	if (!hasTasks) {
@@ -21,7 +22,7 @@ const TodoList = (props) => {
 
 	return (
 		<ul className="todo__list">
-			{/* если filteredTasks не пустой то он ренедерится, иначе рендерится tasks */}
+			{/* если filteredTasks не пустой то он рендерится, иначе рендерится tasks */}
 			{(filteredTasks ?? tasks).map((task) => (
 				<TodoItem
 					className="todo__item"
