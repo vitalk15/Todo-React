@@ -1,16 +1,9 @@
-import { memo } from 'react'
-
+import { memo, useContext } from 'react'
 import TodoItem from './TodoItem'
+import { TasksContext } from '../context/TasksContext'
 
-const TodoList = (props) => {
-	const {
-		tasks = [],
-		filteredTasks,
-		firstIncompleteTaskRef,
-		firstIncompleteTaskId,
-		onDeleteTaskButtonClick,
-		onTaskCompliteChange,
-	} = props
+const TodoList = () => {
+	const { tasks, filteredTasks } = useContext(TasksContext)
 
 	const hasTasks = tasks.length > 0
 	// возвращает true, если массив существует и пуст
@@ -28,14 +21,7 @@ const TodoList = (props) => {
 		<ul className="todo__list">
 			{/* если filteredTasks не пустой то он рендерится, иначе рендерится tasks */}
 			{(filteredTasks ?? tasks).map((task) => (
-				<TodoItem
-					className="todo__item"
-					key={task.id}
-					ref={task.id === firstIncompleteTaskId ? firstIncompleteTaskRef : null}
-					onDeleteTaskButtonClick={onDeleteTaskButtonClick}
-					onTaskCompliteChange={onTaskCompliteChange}
-					{...task}
-				/>
+				<TodoItem className="todo__item" key={task.id} {...task} />
 			))}
 		</ul>
 	)
