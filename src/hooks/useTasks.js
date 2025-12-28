@@ -1,21 +1,15 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import useTasksLocalStorage from './useTasksLocalStorage'
 
 const useTasks = () => {
-	const [tasks, setTasks] = useState(() => {
-		const savedTasks = localStorage.getItem('tasks')
-		if (savedTasks) {
-			return JSON.parse(savedTasks)
-		}
+	const { savedTasks, saveTasks } = useTasksLocalStorage()
 
-		return []
-	})
+	const [tasks, setTasks] = useState(savedTasks ?? [])
 
 	const [newTaskTitle, setNewTaskTitle] = useState('')
 	const [searchQuery, setSearchQuery] = useState('')
 
 	const newTaskInputRef = useRef(null)
-	const firstIncompleteTaskRef = useRef(null)
-	const firstIncompleteTaskId = tasks.find(({ isDone }) => !isDone)?.id
 
 	const deleteAllTasks = useCallback(() => {
 		const isConfirmed = confirm('Удалить все задачи?')
@@ -76,7 +70,7 @@ const useTasks = () => {
 	}, [newTaskTitle])
 
 	useEffect(() => {
-		localStorage.setItem('tasks', JSON.stringify(tasks))
+		saveTasks(tasks)
 	}, [tasks])
 
 	useEffect(() => {
@@ -94,8 +88,6 @@ const useTasks = () => {
 	return {
 		tasks,
 		filteredTasks,
-		firstIncompleteTaskId,
-		firstIncompleteTaskRef,
 		deleteTask,
 		deleteAllTasks,
 		toggleTaskComplite,
