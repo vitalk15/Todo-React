@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import useTasksLocalStorage from './useTasksLocalStorage'
+import tasksAPI from '../api/tasksAPI'
 
 const useTasks = () => {
-	const { savedTasks, saveTasks } = useTasksLocalStorage()
-
-	const [tasks, setTasks] = useState(savedTasks ?? [])
+	const [tasks, setTasks] = useState([])
 
 	const [newTaskTitle, setNewTaskTitle] = useState('')
 	const [searchQuery, setSearchQuery] = useState('')
@@ -15,44 +13,48 @@ const useTasks = () => {
 		const isConfirmed = confirm('Удалить все задачи?')
 
 		if (isConfirmed) {
-			setTasks([])
+			tasksAPI.deleteAll(tasks).then(() => setTasks([]))
 		}
-	}, [])
+	}, [tasks])
 
 	const deleteTask = useCallback(
 		(taskId) => {
-			setTasks(tasks.filter((task) => task.id !== taskId))
+			tasksAPI.delete(taskId).then(() => {
+				setTasks(tasks.filter((task) => task.id !== taskId))
+			})
 		},
 		[tasks]
 	)
 
 	const toggleTaskComplite = useCallback(
 		(taskId, isDone) => {
-			setTasks(
-				tasks.map((task) => {
-					if (task.id === taskId) {
-						return { ...task, isDone }
-					}
+			tasksAPI.toggleComplete(taskId, isDone).then(() => {
+				setTasks(
+					tasks.map((task) => {
+						if (task.id === taskId) {
+							return { ...task, isDone }
+						}
 
-					return task
-				})
-			)
+						return task
+					})
+				)
+			})
 		},
 		[tasks]
 	)
 
 	const addTask = useCallback((title) => {
 		const newTask = {
-			id: Date.now().toString(),
 			title,
 			isDone: false,
 		}
 
-		setTasks((prevTasks) => [...prevTasks, newTask])
-		setNewTaskTitle('')
-		setSearchQuery('')
-
-		newTaskInputRef.current.focus()
+		tasksAPI.add(newTask).then((addedTask) => {
+			setTasks((prevTasks) => [...prevTasks, addedTask])
+			setNewTaskTitle('')
+			setSearchQuery('')
+			newTaskInputRef.current.focus()
+		})
 
 		// Второй вариант
 		// setTasks((task) => [
@@ -68,11 +70,9 @@ const useTasks = () => {
 	}, [])
 
 	useEffect(() => {
-		saveTasks(tasks)
-	}, [tasks])
-
-	useEffect(() => {
 		newTaskInputRef.current.focus()
+
+		tasksAPI.getAll().then(setTasks)
 	}, [])
 
 	const filteredTasks = useMemo(() => {
