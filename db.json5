@@ -1,7 +1,1 @@
-{
-	tasks: [
-		{ id: '8b3f', title: 'раз', isDone: false },
-		{ id: '49b7', title: 'два', isDone: false },
-		{ id: '123', title: 'example', isDone: false },
-	],
-}
+{tasks:[{id:'8b3f',title:'раз',isDone:false},{id:'49b7',title:'два',isDone:false},{id:'123',title:'example',isDone:false},{id:'061a',title:'три',isDone:true}]}

@@ -8,7 +8,7 @@ import Router from './Router'
 const App = () => {
 	const routes = {
 		'/': TasksPage,
-		'/tasks/123': TaskPage,
+		'/tasks/:id': TaskPage,
 		'*': () => <div>404 Page not found</div>,
 	}
 
