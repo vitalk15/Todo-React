@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+/* eslint-disable-next-line react-refresh/only-export-components */
 export const useRoute = () => {
 	const [path, setPath] = useState(window.location.pathname)
 
