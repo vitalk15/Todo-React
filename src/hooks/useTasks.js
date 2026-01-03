@@ -7,6 +7,7 @@ const useTasks = () => {
 	const [newTaskTitle, setNewTaskTitle] = useState('')
 	const [searchQuery, setSearchQuery] = useState('')
 	const [disappearingTaskId, setDisappearingTaskId] = useState(null)
+	const [appearingTaskId, setAppearingTaskId] = useState(null)
 
 	const newTaskInputRef = useRef(null)
 
@@ -59,19 +60,11 @@ const useTasks = () => {
 			setNewTaskTitle('')
 			setSearchQuery('')
 			newTaskInputRef.current.focus()
+			setAppearingTaskId(addedTask.id)
+			setTimeout(() => {
+				setAppearingTaskId(null)
+			}, 400)
 		})
-
-		// Второй вариант
-		// setTasks((task) => [
-		// 	...task,
-		// 	{
-		// 		id: String(crypto?.randomUUID ?? Date.now()),
-		// 		title: newTaskTitle,
-		// 		isDone: false,
-		// 	},
-		// ])
-		// setNewTaskTitle('')
-		// setSearchQuery('')
 	}, [])
 
 	useEffect(() => {
@@ -96,6 +89,7 @@ const useTasks = () => {
 		deleteAllTasks,
 		toggleTaskComplite,
 		addTask,
+		appearingTaskId,
 		newTaskTitle,
 		setNewTaskTitle,
 		newTaskInputRef,
